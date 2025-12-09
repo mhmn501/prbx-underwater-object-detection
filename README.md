@@ -1,81 +1,97 @@
-# PRBX: Deep Learning for Underwater Object Detection
 
-## Project Setup and Execution Guide
+# Deep Learning for Underwater Object Detection with a Focus on Fish Species Recognition and Classification
 
-### Prerequisites
-- **Anaconda**: This project requires Anaconda to manage virtual environments and dependencies. Ensure you have Anaconda installed. You can download it from [Anaconda's official site](https://www.anaconda.com/products/individual).
+## Project Overview
 
-### Environment Setup
-Follow these steps to set up your virtual environment and install the necessary dependencies:
+This project implements three deep learning architectures—YOLOv8, EfficientNet, and Swin Transformer—for classifying fish species from underwater images using the Fish4Knowledge dataset. It includes complete training, evaluation, visualization, and metric logging pipelines for each model, implemented in PyTorch.
 
-1. **Clone the Repository**
-   - Clone the project repository to your local machine using Git:
-     ```bash
-     git clone https://github.com/mhmn501/imlo.git
-     cd path-to-your-project
-     ```
+---
 
-2. **Create the Anaconda Environment**
-   - Create a new virtual environment using Anaconda:
-     ```bash
-     conda create -n myenv python=3.8
-     ```
-   - Activate the newly created environment:
-     ```bash
-     conda activate myenv
-     ```
+## Project Structure
 
-3. **Install Dependencies**
-   - Ensure the `requirements.txt` or `environment.yml` file is present in your project directory.
-   - If using `environment.yml` and the newly created environment, use the following command to update the environment with all dependencies:
-     ```bash
-     conda env update --name myenv --file environemnt.yml --prune
-     ```
-   - If you have a `requirements.txt`, install the required Python packages:
-     ```bash
-     pip install -r requirements.txt
-     ```
-   
+```
+PRBX/
+├── datasets/                        # <--- Not included, see instructions below
+│   ├── Fish4Knowledge/              # Original dataset
+│   ├── Fish4K-Split/                # For EfficientNet & Swin Transformer
+│   └── Fish4K-YOLO/                 # For YOLOv8 training
+├── EfficientNet_Implementation/     # Training & evaluation scripts for EfficientNet
+├── SwinTransformer_Implementation/  # Training & evaluation scripts for Swin Transformer
+├── YOLOv8_Implementation/           # YOLOv8 training, prediction, and visualization
+├── environment.yml                  # Conda environment file
+```
 
-### Running the Code
-To run the project using terminal:
+---
 
-1. **Directory and Environment**
-   - Ensure the `Image-Classifier-Neural-Network.py` and `latest_model.pth` file is present in your project directory.
-   - Ensure the virtual environment is already activated and you are within the project directory.
-     
-2. **Model Testing**
-   - To validate the reported classification performance (the training part is commented out by default), run the file:
-     ```bash
-        python Image-Classifier-Neural-Network.py
-        ```
-     
-3. **Model Training**
-   - To train the model, remove this comment in the main function:
-     ```
-     # run_training(model, device, NUM_EPOCHS, loaders['train'], loaders['val'], optimizer, scheduler, loss_fn, start_epoch, best_val_loss, checkpoint_path)
-     ```
-   - Then run it the same as model testing.
+## Dataset Setup
 
+Due to size constraints, the dataset is not included in this repository. Download the dataset from the following link and extract the contents into the `datasets/` folder:
 
-To run the project and evaluate the model using Jupyter Notebook:
+**[Download Dataset from Google Drive](https://drive.google.com/file/d/1edDj1FIqWpUwPX0sf5qH2N-cevOn5yZe/view?usp=drive_link)**
 
-1. **Launch Jupyter Notebook**
-   - With the virtual environment activated, start Jupyter Notebook:
-     ```bash
-     jupyter notebook
-     ```
+After extraction, your `datasets/` directory should look like:
 
-2. **Open the Notebook**
-   - Navigate to the project notebook (`Image-Classifier-Neural-Network.ipynb`) in the Jupyter Notebook interface opened in your web browser.
+```
+datasets/
+├── Fish4Knowledge/
+├── Fish4K-Split/
+└── Fish4K-YOLO/
+```
 
-3. **Run the Notebook**
-   - Execute the cells in sequence to train or evaluate the model. Ensure that the dataset path and any configuration settings are correct as per your setup.
+---
 
-4. **Model Evaluation**
-   - To validate the reported classification performance, run the testing sections of the notebook which load the trained model and perform classification on the test dataset.
+## Environment Setup
 
-### Important Notes
-- Ensure that the path to the dataset and the paths in code (e.g., for loading the model) are correct based on your local or server setup.
-- The notebook includes detailed comments explaining each step of the code, which facilitates understanding and any required adjustments.
+1. **Install Anaconda** (if not already):  
+   [https://www.anaconda.com/products/distribution](https://www.anaconda.com/products/distribution)
 
+2. **Create and activate virtual environment:**
+```bash
+conda env create -f environment.yml
+conda activate prbx
+```
+
+3. **Launch your preferred editor:**
+   - Use **Jupyter Notebook** for easy step-by-step exploration, or  
+   - Use **VS Code** for full script-based control
+
+---
+
+## Getting Started
+
+You can run and experiment with any of the models below:
+
+### 1. YOLOv8 (Detection)
+
+- Go to `YOLOv8_Implementation/`
+- Run or edit `train_yolov8_fish4k.py` to start training
+
+### 2. EfficientNet (Classification)
+
+- Go to `EfficientNet_Implementation/`
+- Use `train_efficientnet_fish4k.py` for full training and testing pipeline
+- Plots and metrics are auto-saved
+
+### 3. Swin Transformer (Classification)
+
+- Go to `SwinTransformer_Implementation/`
+- Use `train_swin_fish4k.py` for training, early stopping, checkpoint saving, and plotting
+
+> Each script is modular and extensively commented. Paths, parameters, and hyperparameters can be changed at the top of each script.
+
+---
+
+## Output Artifacts
+
+- Model checkpoints (`.pth`) will be saved in each implementation folder
+- Metrics will be saved as `.csv`
+- Evaluation plots and confusion matrices are saved in each implementation folder
+
+---
+
+## Notes
+
+- Ensure that the path to the dataset and the paths in code (e.g., for loading the model, and datasets) are correct based on your local setup.
+- Each implementation uses the same Fish4Knowledge dataset but formatted differently.
+- Use GPU when available to accelerate training (AMP-enabled for YOLOv8 & Swin).
+- Model configurations and environment are reproducible via `environment.yml`.
